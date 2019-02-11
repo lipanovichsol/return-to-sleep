@@ -18,7 +18,9 @@ Class {
 		'gamepieces',
 		'board',
 		'dices',
-		'gamepiece2'
+		'gamepiece2',
+		'players',
+		'judge'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -54,12 +56,15 @@ BoardTest >> setUp [
  add: gamepiece2.
 	board := Board withSquares: squares gamepieces: gamepieces andRounds: 5.
 	dices := Set new.
-	dices add: (LoadedDice withFaces: 3)
+	dices add: (LoadedDice withFaces: 3).
+	players := OrderedCollection new. 
+	players add: player. 
+	judge := Judge named: 'Pitana' assuring: players on: Board new.
 ]
 
 { #category : #'board-tests' }
 BoardTest >> testBoardApplyEffectToAGamePieceWhenPlayerPlays [
-	player playsATurnWith: dices.
+	player playsATurnWith: dices andTellJudge: judge.
 	gamepiece1 positionOnBoardBasedOnNSquares: board squares size.
 	self assert: gamepiece1 position equals: 3.
 	board applyEffectToAGamepiece: gamepiece1.

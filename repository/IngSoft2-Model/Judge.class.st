@@ -74,6 +74,11 @@ Judge >> playerHasWon [
 ]
 
 { #category : #Accesing }
+Judge >> playingSequence [
+	^ playingSequence
+]
+
+{ #category : #Accesing }
 Judge >> ranking: aPlayerGamepiece [
 	| gamepieces otherGamepieces ranking |
 	ranking := 1.

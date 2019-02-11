@@ -7,7 +7,9 @@ Class {
 		'dice3',
 		'setOfDices',
 		'gamepiece',
-		'player'
+		'player',
+		'players',
+		'judge'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -28,14 +30,17 @@ PlayerTest >> setUp [
 		aGamePiece: gamepiece
 		aCard: Overload withValue
 		andOtherCard: Overload withValue.
+	players := OrderedCollection new.
+	players add: player.
+	judge := Judge named: 'Pitana' assuring: players on: Board new. 
 ]
 
 { #category : #'player-tests' }
 PlayerTest >> testAPlayerPositionChangesWhenPlays [
 	self assert: player gamepiece position equals: 0.
-	player playsATurnWith: setOfDices.
+	player playsATurnWith: setOfDices andTellJudge: judge.
 	self assert: player gamepiece position equals: 20.
-	player playsATurnWith: setOfDices.
+	player playsATurnWith: setOfDices andTellJudge: judge.
 	self assert: player gamepiece position equals: 40
 ]
 
