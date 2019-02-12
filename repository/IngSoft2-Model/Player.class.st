@@ -40,6 +40,11 @@ Player >> name [
 ]
 
 { #category : #Accesing }
+Player >> playCard: aReverseCard andTellJudge: aJudge [ 
+	hand playCard: aReverseCard andTellJudge: aJudge.
+]
+
+{ #category : #Accesing }
 Player >> playCard: aCard applyTo: aPlayer andTellJudge: aJudge [
 	aJudge validateTurnOf: self.
 	hand playCard: aCard applyTo: aPlayer andTellJudge: aJudge
@@ -82,8 +87,9 @@ Player >> playCard: aCard applyingEffect: aSquareEffectApplied andTellJudge: aJu
 ]
 
 { #category : #Accesing }
-Player >> playsATurnWith: aSetOfDices [
+Player >> playsATurnWith: aSetOfDices andTellJudge: aJudge [
 	| totalValueOfDices valuesOfCardEffects |
+	aJudge validateTurnOf: self.
 	totalValueOfDices := aSetOfDices sumNumbers: [ :x | x roll ].
 	valuesOfCardEffects := playerGamePiece cardEffectsApplied inject: 0 into: [ :sum :each | sum + each causalCard value ].
 	playerGamePiece changePositionTo: playerGamePiece position + totalValueOfDices + valuesOfCardEffects

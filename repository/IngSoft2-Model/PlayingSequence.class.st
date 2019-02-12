@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'players',
-		'turnIndex'
+		'turnIndex',
+		'inOrder'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -17,10 +18,27 @@ PlayingSequence class >> withAllPlayers: anArrayOfPlayers. [
 ]
 
 { #category : #Accesing }
+PlayingSequence >> changeOrder [
+	inOrder := inOrder not. 
+]
+
+{ #category : #Accesing }
 PlayingSequence >> changeToNextPlayer [
-	(turnIndex < players size)
-	ifTrue: [turnIndex := turnIndex + 1.]
-	ifFalse: [ turnIndex := 1 ]
+
+	(turnIndex < players size) 
+	ifTrue: 	
+	[
+			(inOrder)
+			ifTrue:		[turnIndex := turnIndex + 1]
+			ifFalse:    [  
+			 (turnIndex > 1) ifTrue: [turnIndex := turnIndex -1] ifFalse: [turnIndex := players size ].]     ]
+	ifFalse: 
+	[
+		(inOrder)
+		ifTrue: 	[ turnIndex := 1 ]
+		ifFalse: [  turnIndex := turnIndex -1]
+	] 
+		
 	
 ]
 
@@ -32,5 +50,18 @@ PlayingSequence >> currentPlayer [
 { #category : #Initializing }
 PlayingSequence >> initializeWithAllPlayers: anOrderedCollectionOfPlayers [
 	players := anOrderedCollectionOfPlayers.
-	turnIndex := 1
+	turnIndex := 1.
+	inOrder := true. 
+]
+
+{ #category : #Accesing }
+PlayingSequence >> repeatTurn [
+	inOrder := inOrder not.
+	self changeToNextPlayer.
+	inOrder := inOrder not. 
+]
+
+{ #category : #accesing }
+PlayingSequence >> skipPlayer [
+	self changeToNextPlayer.
 ]

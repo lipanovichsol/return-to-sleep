@@ -78,16 +78,15 @@ GamepieceTest >> setUp [
 { #category : #'Gamepiece - tests' }
 GamepieceTest >> testGamepiecesFinalRankingWhenThereIsAWinner [
 	| winner |
-	
 	[ judge playerHasWon ]
 		whileFalse: [ judge validateTurnOf: player1.
-			player1 playsATurnWith: dices1.
+			player1 playsATurnWith: dices1 andTellJudge: judge.
 			judge validateRoundsOfPlayers.
 			gamepiece1 positionOnBoardBasedOnNSquares: board squares size.
 			board applyEffectToAGamepiece: gamepiece1.
 			judge changeTurnOfPlayers.
 			judge validateTurnOf: player2.
-			player2 playsATurnWith: dices2.
+			player2 playsATurnWith: dices2 andTellJudge: judge.
 			judge validateRoundsOfPlayers.
 			gamepiece2 positionOnBoardBasedOnNSquares: board squares size.
 			board applyEffectToAGamepiece: gamepiece2.

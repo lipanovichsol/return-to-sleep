@@ -33,15 +33,9 @@ SquareEffectTest >> testApplyAtomicBombToAGamePiece [
 	effect0 := NonEffect new.
 	effect1 := AtomicBomb new.
 	effect2 := NonEffect new.
-	square0 := Square
-		withAnEffect: effect0
-		thatGivesCard: false.
-	square1 := Square
-		withAnEffect: effect1
-		thatGivesCard: false.
-	square2 := Square
-		withAnEffect: effect2
-		thatGivesCard: false.
+	square0 := Square withAnEffect: effect0 thatGivesCard: false.
+	square1 := Square withAnEffect: effect1 thatGivesCard: false.
+	square2 := Square withAnEffect: effect2 thatGivesCard: false.
 	squares := Dictionary
 		newFrom:
 			{(0 -> square0).
@@ -69,18 +63,15 @@ SquareEffectTest >> testApplyAtomicBombToAGamePiece [
 		withSquares: squares
 		gamepieces: gamepieces
 		andRounds: 2.
-	judge := Judge
-		named: 'Pitana'
-		assuring: players
-		on: board.
+	judge := Judge named: 'Pitana' assuring: players on: board.
 	judge validateTurnOf: player1.
-	player1 playsATurnWith: dices1.
+	player1 playsATurnWith: dices1 andTellJudge: judge.
 	judge validateRoundsOfPlayers.
 	board updateGamepiecesPositionOnBoard.
 	board applyEffectToAGamepiece: gamepiece1.
 	judge changeTurnOfPlayers.
 	judge validateTurnOf: player2.
-	player2 playsATurnWith: dices2.
+	player2 playsATurnWith: dices2 andTellJudge: judge.
 	judge validateRoundsOfPlayers.
 	board updateGamepiecesPositionOnBoard.
 	board applyEffectToAGamepiece: gamepiece2.

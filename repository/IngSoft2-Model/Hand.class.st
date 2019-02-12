@@ -23,6 +23,18 @@ Hand >> initializeWithACard: aFirstCard andOtherCard: aSecondCard [
 ]
 
 { #category : #Accesing }
+Hand >> playCard: aReverseCard andTellJudge: aJudge [ 
+	| card |
+	card := cards
+		detect: [ :each | each  = aReverseCard ]
+		ifNone: [ CardBelongToPlayerFailed
+				signal: 'This player does not have this card' ].
+	aReverseCard applyEffectTo: aJudge playingSequence. 
+	cards remove: aReverseCard.
+	aJudge tellLastCardPlayed: aReverseCard
+]
+
+{ #category : #Accesing }
 Hand >> playCard: aCard applyTo: aPlayer andTellJudge: aJudge [
 	| card |
 	card := cards
