@@ -1,12 +1,27 @@
 Class {
 	#name : #CardTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'dices',
+		'players',
+		'judge',
+		'aCard'
+	],
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'card-tests' }
+CardTest >> setUp [
+	dices := Set new.
+	dices add: (LoadedDice withFaces: 1).
+	players := OrderedCollection new.
+	judge := Judge named: 'Pitana' assuring: players on: Board new.
+	aCard := SpeedUp withAPowerValue: 2. 
+]
+
+{ #category : #'card-tests' }
 CardTest >> testAccelerationCard [
-	| player1 player2 dices players judge card1 card2 card3 card4 |
+	| player1 player2 card1 card2 card3 card4 |
 	card1 := Overload withValue.
 	card2 := Acceleration withValue.
 	card3 := Overload withValue.
@@ -21,13 +36,9 @@ CardTest >> testAccelerationCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card3
 		andOtherCard: card4.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 1).
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
 	player1 playsATurnWith: dices andTellJudge: judge.
 	self assert: player1 gamepiece position equals: 1.
 	player1 playCard: card2 applyTo: players andTellJudge: judge.
@@ -65,7 +76,7 @@ CardTest >> testAccelerationCard [
 
 { #category : #'card-tests' }
 CardTest >> testCancellationCard [
-	| player1 player2 dices players judge card1 card2 card3 card4 |
+	| player1 player2 card1 card2 card3 card4 |
 	card1 := Overload withValue.
 	card2 := Acceleration withValue.
 	card3 := Cancellation withValue.
@@ -80,13 +91,10 @@ CardTest >> testCancellationCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card3
 		andOtherCard: card4.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 1).
+	
 	player1 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
 	player2 playsATurnWith: dices andTellJudge: judge.
@@ -169,7 +177,7 @@ CardTest >> testCreateAnOverloadCard [
 
 { #category : #'card-tests' }
 CardTest >> testDoubleCard [
-	| player1 player2 players judge card1 card2 card3 card4 card5 card6 player3 aCard card7 card8 player4 dices |
+	| player1 player2 player3 player4 card1 card2 card3 card4 card5 card6 card7 card8 |
 	card1 := Double withValue.
 	card2 := aCard.
 	card3 := aCard.
@@ -198,15 +206,11 @@ CardTest >> testDoubleCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card7
 		andOtherCard: card8.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2;
 		add: player3;
 		add: player4.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 1).
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
 	player1 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
 	player2 playsATurnWith: dices andTellJudge: judge.
@@ -228,7 +232,7 @@ CardTest >> testDoubleCard [
 
 { #category : #'card-tests' }
 CardTest >> testOverloadCard [
-	| player1 player2 dices players judge card1 card2 card3 card4 |
+	| player1 player2 card1 card2 card3 card4 |
 	card1 := Overload withValue.
 	card2 := Overload withValue.
 	card3 := Overload withValue.
@@ -243,13 +247,9 @@ CardTest >> testOverloadCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card3
 		andOtherCard: card4.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 1).
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
 	player1 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
 	self assert: player1 gamepiece position equals: 1.
@@ -285,7 +285,7 @@ CardTest >> testOverloadCard [
 
 { #category : #'card-tests' }
 CardTest >> testRedoCard [
-	| player1 player2 dices players judge card1 card2 card3 card4 |
+	| player1 player2 card1 card2 card3 card4 |
 	card1 := Overload withValue.
 	card2 := Cancellation withValue.
 	card3 := Redo withValue.
@@ -300,13 +300,9 @@ CardTest >> testRedoCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card3
 		andOtherCard: card4.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 1).
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
 	player1 playCard: card1 applyTo: player2 andTellJudge: judge.
 	judge changeTurnOfPlayers.
 	player2 playsATurnWith: dices andTellJudge: judge.
@@ -360,7 +356,7 @@ CardTest >> testRedoCard [
 
 { #category : #'card-tests' }
 CardTest >> testRepeatCard [
-	| player1 player2 dices players judge gamepiece1 gamepiece2 gamepieces effect1 effect4 square0 square1 square2 square3 square4 squares board card1 card2 card3 card4 nonEffect |
+	| player1 player2 gamepiece1 gamepiece2 gamepieces effect1 effect4 square0 square1 square2 square3 square4 squares board card1 card2 card3 card4 nonEffect aJudge |
 	card1 := Repeat withValue.
 	card2 := Overload withValue.
 	card3 := Overload withValue.
@@ -377,12 +373,9 @@ CardTest >> testRepeatCard [
 		aGamePiece: gamepiece2
 		aCard: card3
 		andOtherCard: card4.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 4).
 	gamepieces := Set new.
 	gamepieces
 		add: gamepiece1;
@@ -406,23 +399,25 @@ CardTest >> testRepeatCard [
 		withSquares: squares
 		gamepieces: gamepieces
 		andRounds: 2.
-	judge := Judge named: 'Pitana' assuring: players on: board.
-	judge validateTurnOf: player1.
-	player1 playsATurnWith: dices andTellJudge: judge.
-	judge validateRoundsOfPlayers.
+	dices := Set new.
+	dices add: (LoadedDice withFaces: 4).
+	aJudge := Judge named: 'Delfino' assuring: players on: board. 
+	aJudge validateTurnOf: player1.
+	player1 playsATurnWith: dices andTellJudge: aJudge.
+	aJudge validateRoundsOfPlayers.
 	board updateGamepiecesPositionOnBoard.
 	board applyEffectToAGamepiece: gamepiece1.
 	self assert: player1 gamepiece position equals: 6.
 	player2
 		playCard: card4
 		applyingEffect: board lastSquareEffectApplied
-		andTellJudge: judge.
+		andTellJudge: aJudge.
 	self assert: player1 gamepiece position equals: 8
 ]
 
 { #category : #'card-tests' }
 CardTest >> testRepeatCardWithAnNonEffect [
-	| player1 player2 dices players judge gamepiece1 gamepiece2 gamepieces effect4 square0 square1 square2 square3 square4 squares board dices2 card1 card2 card3 card4 nonEffect |
+	| player1 player2 gamepiece1 gamepiece2 gamepieces effect4 square0 square1 square2 square3 square4 squares board dices2 card1 card2 card3 card4 nonEffect dices1 |
 	card1 := Repeat withValue.
 	card2 := Overload withValue.
 	card3 := Overload withValue.
@@ -439,12 +434,11 @@ CardTest >> testRepeatCardWithAnNonEffect [
 		aGamePiece: gamepiece2
 		aCard: card3
 		andOtherCard: card4.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 4).
+	dices1 := Set new.
+	dices1 add: (LoadedDice withFaces: 4).
 	dices2 := Set new.
 	dices2 add: (LoadedDice withFaces: 3).
 	gamepieces := Set new.
@@ -471,7 +465,7 @@ CardTest >> testRepeatCardWithAnNonEffect [
 		andRounds: 2.
 	judge := Judge named: 'Pitana' assuring: players on: board.
 	judge validateTurnOf: player1.
-	player1 playsATurnWith: dices andTellJudge: judge.
+	player1 playsATurnWith: dices1 andTellJudge: judge.
 	judge validateRoundsOfPlayers.
 	board updateGamepiecesPositionOnBoard.
 	board applyEffectToAGamepiece: gamepiece1.
@@ -510,7 +504,7 @@ CardTest >> testRepeatCardWithAnNonEffect [
 
 { #category : #'card-tests' }
 CardTest >> testReverseCard [
-	| player1 player2 players judge card1 card2 card3 card4 card5 card6 player3 aCard card7 card8 player4 |
+	| player1 player2 card1 card2 card3 card4 card5 card6 player3 card7 card8 player4 |
 	card1 := Reverse withValue.
 	card2 := aCard.
 	card3 := aCard.
@@ -539,41 +533,43 @@ CardTest >> testReverseCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card7
 		andOtherCard: card8.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2;
 		add: player3;
 		add: player4. 
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
-	judge validateTurnOf: player1.
+	player1 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player2. 
+	player2 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player3. 
+	player3 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player4. 
+	player4 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player1.  
+	player1 playsATurnWith: dices andTellJudge: judge.   
 	player1 playCard: card1 andTellJudge: judge. 
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player4.
+	self should: [ player2 playsATurnWith: dices andTellJudge: judge ]
+		raise: JudgeValidationFailed. 
+	player4 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player3. 
+	player3 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player2.
+	player2 playsATurnWith: dices andTellJudge: judge. 
 	player3 playCard: card6 andTellJudge: judge.
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player3.
+	self should: [ player1 playsATurnWith: dices andTellJudge: judge ]
+		raise: JudgeValidationFailed. 
+	player3 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player4.
+	player4 playsATurnWith: dices andTellJudge: judge. 
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player1.
+	player1 playsATurnWith: dices andTellJudge: judge. 
 ]
 
 { #category : #'card-tests' }
 CardTest >> testSkipCard [
-	| player1 player2 players judge card1 card2 card3 card4 card5 card6 player3 aCard card7 card8 player4 |
+	| player1 player2 card1 card2 card3 card4 card5 card6 player3 card7 card8 player4 |
 	card1 := Skip withValue.
 	card2 := aCard.
 	card3 := aCard.
@@ -602,41 +598,43 @@ CardTest >> testSkipCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card7
 		andOtherCard: card8.
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2;
 		add: player3;
 		add: player4. 
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
-	judge validateTurnOf: player1.
+	player1 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player2. 
+	player2 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player3. 
+	player3 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player4. 
+	player4 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player1.  
+	player1 playsATurnWith: dices andTellJudge: judge. 
 	player1 playCard: card1 andTellJudge: judge. 
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player3.
+	self should: [ player2 playsATurnWith: dices andTellJudge: judge ] 
+	raise: JudgeValidationFailed. 
+	player3 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player4. 
+	player4 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player1.
+	player1 playsATurnWith: dices andTellJudge: judge.
 	player3 playCard: card6 andTellJudge: judge.
 	judge changeTurnOfPlayers. 
-	judge validateTurnOf: player3.
+	self should: [ player2 playsATurnWith: dices andTellJudge: judge ] 
+	raise: JudgeValidationFailed. 
+	player3 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player4.
+	player4 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
-	judge validateTurnOf: player1.
+	player1 playsATurnWith: dices andTellJudge: judge.
 ]
 
 { #category : #'card-tests' }
 CardTest >> testSpeedCard [
-	| player1 player2 dices players judge card1 card2 card3 card4 |
+	| player1 player2 card1 card2 card3 card4 |
 	card1 := Speed withValue.
 	card2 := Speed withValue.
 	card3 := Speed withValue.
@@ -651,13 +649,9 @@ CardTest >> testSpeedCard [
 		aGamePiece: Gamepiece withInitialPosition
 		aCard: card3
 		andOtherCard: card4.
-	dices := Set new.
-	dices add: (LoadedDice withFaces: 1).
-	players := OrderedCollection new.
 	players
 		add: player1;
 		add: player2.
-	judge := Judge named: 'Pitana' assuring: players on: Board new.
 	player1 playsATurnWith: dices andTellJudge: judge.
 	judge changeTurnOfPlayers.
 	self assert: player1 gamepiece position equals: 1.
